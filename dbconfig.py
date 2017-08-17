@@ -1,9 +1,10 @@
 import pymysql
-import dbconfig ##not sure whether this actually got imported...
-connection = pymysql.connect(host='localhost', user=dbconfig.db_user, passwd=dbconfig.db_password)
+import dbconfig
+connection = pymysql.connect(host='localhost', user="root", passwd=123)
 
 try:
     with connection.cursor() as cursor: ##the beginning of sql code
+
         sql = "CREATE DATABASE IF NOT EXISTS meteorstrike"
         cursor.execute(sql)
         sql = """CREATE TABLE IF NOT EXISTS meteorstrike.strikes (
