@@ -1,5 +1,6 @@
 import pymysql
-#import dbconfig <- only need this when not hardcoding user & password
+#from Flask_DBConfig
+#<- only need this when not hardcoding user & password
 #write fake password before uploading to Github
 connection = pymysql.connect(host='localhost', user="root", passwd="123")
 
