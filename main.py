@@ -1,23 +1,35 @@
-import feedparser
 from flask import Flask
 from flask import render_template
 from flask import request
 
 app = Flask(__name__)
-BBC_FEED = "http://feeds.bbci.co.uk/news/rss.xml"
+DB = DBHelper()
 
-@app.route('/')
-def get_news():
-    feed = feedparser.parse(BBC_FEED)
-    first_article = feed['entries'][0]
-    return """<html>
-    <body>
-        <h1> BBC Headlines </h1>
-        <b>{0}</b> <br/>
-        <i>{1}</i> <br/>
-        <p>{2}</p> <br/>
-    </body>
-    </html>""".format(first_article.get("title"), first_article.get("published"), first_article.get("summary"))
+@app.route("/")
+def home():
+    try:
+        data = DB.get_all_inputs()
+    except Exception as e:
+        print e
+        data = None
+    return render_template("home.html", data=data)
+
+@app.route("/add", methods=["POST"])
+def add():
+    try:
+        data = request.form.get("userinput")
+        DB.add_input(data)
+    except Exception as e:
+        print e
+    return home()
+
+@app.route("/clear")
+def clear():
+    try:
+        DB.clear_all()
+    except Exception as e:
+        print e
+    return home()
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(debug=True)
